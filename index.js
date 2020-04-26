@@ -19,7 +19,7 @@ const io = socketIO(server);
 
 io.on("connection", (socket) => {
     console.log('Nueva conexion ' + socket.id);
-
+    let conectados=[];
     socket.on("chat-mensaje", (data) => {
         io.sockets.emit("chat-mensaje", data);
         //le envio el mensaje a todos los sockets conectados
@@ -31,5 +31,15 @@ io.on("connection", (socket) => {
         // con el broadcast emito a todos los socket menos al que lo envio
 
     });
+
+
+    socket.on("conectar", (data) => {
+        socket.broadcast.emit("conectar", data);
+    });
+
+    socket.on("desconectado", (data) => {
+        socket.broadcast.emit("desconectado", data);
+    });
+
 
 });

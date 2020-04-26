@@ -1,15 +1,14 @@
 body {
-    background-color: #66FF68;
+    background-color: #272B44;
     font-family: 'Nunito', sans-serif;
 }
 
+#conectados{
+    background-color: #2C325B;
+    box-shadow:1px 3px 5px rgba(0,0,0,0.5);
+}
 #chat-container{
-    background-color: #C7FFC7;
-    max-width: 400px;
-    height: 400px;
-    overflow-y: auto;
-    margin: 30px auto;
-    border :solid 1px #eee;
+    background-color: #2C325B;
     box-shadow:1px 3px 5px rgba(0,0,0,0.5);
 }
 
@@ -37,8 +36,15 @@ input {
     padding: 10px 20px;
     box-sizing: border-box;
     border: 0;
-    background:#eee;
+    background:#8290F0;
     display: block;
     width: 100%;
+}
+h1{
+    color:#fff
+}
+
+.letras{
+    color:#fff
 }
 
