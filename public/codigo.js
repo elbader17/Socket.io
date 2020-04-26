@@ -31,7 +31,7 @@ let ModuloChat = function () {
 const socket = io();               //coneccion con el socket
 
 let actions = document.getElementById("actions");          //traigo todos los elementos del html
-let dmensaje = document.getElementById('chat-mensaje');  
+let dmensaje = document.getElementById('chat-mensaje');
 let wmensaje = document.getElementById('chat-windows');
 let usuario = document.getElementById('usuario');
 let mensaje = document.getElementById('mensaje');
@@ -39,14 +39,14 @@ let btnenvar = document.getElementById('btnenviar');
 let conectar = document.getElementById('conectar');
 let conectados = document.getElementById('conectados');
 let boton = document.getElementById('boton');
-let usuarioInput=document.getElementById('usuarioInput');
-
-
+let usuarioInput = document.getElementById('usuarioInput');
+let botonC=document.getElementById('botonC');
+let listaConectados = [];
 
 
 let ModuloSocket = function () {
     socket.on('chat-mensaje', (data) => {                        //escucho el evento "chat.mensaje" y agrego los mensajes mas el usuario al html
-        actions.innerHTML = "";                               
+        actions.innerHTML = "";
         dmensaje.innerHTML += `<p>                          
         <strong> ${data.usuario} </strong>:  ${data.mensaje}
         </p>`;
@@ -55,6 +55,9 @@ let ModuloSocket = function () {
 
 ModuloSocket();                                                  //instancio la funcion 
 
+
+
+
 mensaje.addEventListener('keypress', function () {              //con el evento keypress cada ves que el usuariio ponga algo en el input mensaje
     socket.emit('escribiendo', usuario.value);                 // envio el usuario al servidor
 });
@@ -62,37 +65,52 @@ mensaje.addEventListener('keypress', function () {              //con el evento 
 
 socket.on('escribiendo', (data) => {                                 // escucho el evento escribiendo y remplazo el actions por un div con el nombre del usuario
     actions.innerHTML = `<div>${data} esta escribiendo...</div>`;    // que esta escribiendo
-    
+
 });
 
 
 socket.on('conectar', (data) => {
     conectados.innerHTML += `<div class="chat-container">
-    <h4 class="letras">${data} en linea</h4>
+    <h4 id="${data}" class="letras">${data} en linea</h4>
     </div>`;
+    listaConectados.push(data);
+    dmensaje.innerHTML += `<p>                          
+        <strong> ${data} </strong> se a conectado:)
+        </p>`;
+
 });
 
-socket.on('desconectado',(data)=>{
-    //trabajando xdxdxd
+socket.on('desconectado', (data) => {
+    conect = document.getElementById(data);
+    eliminar = conect.parentNode;
+    eliminar.removeChild(conect);
+    dmensaje.innerHTML += `<p>                          
+        <strong> ${data} </strong> se a desconectado:(
+        </p>`;
+
 });
 
-conectar.addEventListener("click", () => {
-    socket.emit('conectar', usuario.value);
-});
+
 
 desconectar.addEventListener("click", () => {
-    desconectar.innerHTML = `<div id="desconectar"></div>`
-    boton.innerHTML+=`<input type="button" class="btn btn-primary my-3" value="conectar" id="conectar">`;
-    usuarioInput.innerHTML+=`<input type="text" class="col-12" id="usuario" placeholder="Nombre">`
-    socket.emit('desconectado', usuario.value); 
-})
+    socket.emit('desconectado', usuario.value);
+    conectar.style.display='block';
+    usuario.style.display = 'block';
+    desconectar.style.display='none';
+});
 
 conectar.addEventListener("click", () => {
-    desconectar.innerHTML = `<input type="button" class="btn btn-danger my-3" value="desconectar" id="conectar" >`
-    con=conectar.parentNode;
-    con.removeChild(conectar);
-    usu=usuario.parentNode;
-    usu.removeChild(usuario);
+    if (usuario.value == '') {
+        alert('Por favor ingrese un usuario');                     // si en el input no hay nada, se manda un alert     
+        return false;
+    }
+    else{
+        socket.emit('conectar', usuario.value);
+        conectar.style.display = 'none'
+        usuario.style.display = 'none'
+        desconectar.style.display = 'block'
+   
+    }
 });
 
 
@@ -114,15 +132,14 @@ btnenvar.addEventListener("click", () => {                         // escucho el
         usuario: usuario.value
     })
 
-    usuario.innerHTML =`<input type="text" class="col-2" id="usuario" placeholder="Nombre">`
-    
-    socket.emit('conectado', usuario.value); 
+
+    socket.emit('conectado', usuario.value);
 
 
     ModuloChat.agregarMensaje(mensaje.value);
     mensaje.value = '';
 
-    if (ModuloChat.obtnerCantidaddeMensaje() == 5) { // cuando llego al limite de mensajes se vacia el chat
+    if (ModuloChat.obtnerCantidaddeMensaje() == 10) { // cuando llego al limite de mensajes se vacia el chat
 
         dmensaje.innerHTML = `<div id='chat-mensaje'> </div>`
         ModuloChat.eliminarMensaje();
