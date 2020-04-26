@@ -97,6 +97,8 @@ desconectar.addEventListener("click", () => {
     conectar.style.display='block';
     usuario.style.display = 'block';
     desconectar.style.display='none';
+    mensaje.style.display='none';
+    btnenvar.style.display='none'
 });
 
 conectar.addEventListener("click", () => {
@@ -109,6 +111,8 @@ conectar.addEventListener("click", () => {
         conectar.style.display = 'none'
         usuario.style.display = 'none'
         desconectar.style.display = 'block'
+        mensaje.style.display='block'
+        btnenvar.style.display='block'
    
     }
 });
