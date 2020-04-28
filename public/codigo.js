@@ -58,6 +58,7 @@ ModuloSocket();                                                  //instancio la 
 
 
 
+
 mensaje.addEventListener('keypress', function () {              //con el evento keypress cada ves que el usuariio ponga algo en el input mensaje
     socket.emit('escribiendo', usuario.value);                 // envio el usuario al servidor
 });
@@ -95,7 +96,7 @@ socket.on('desconectado', (data) => {
 desconectar.addEventListener("click", () => {
     socket.emit('desconectado', usuario.value);
     conectar.style.display='block';
-    usuario.style.display = 'block';
+    usuario.style.display = 'block';                                     // cambio los style de los botones
     desconectar.style.display='none';
     mensaje.style.display='none';
     btnenvar.style.display='none'
@@ -109,7 +110,7 @@ conectar.addEventListener("click", () => {
     else{
         socket.emit('conectar', usuario.value);
         conectar.style.display = 'none'
-        usuario.style.display = 'none'
+        usuario.style.display = 'none'                        // cambio los style de los botones
         desconectar.style.display = 'block'
         mensaje.style.display='block'
         btnenvar.style.display='block'

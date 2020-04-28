@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const socketIO = require('socket.io');
 
-
+let lMensajes=[];
 //configuracion
 app.set('port', process.env.PORT || 3000);
 
@@ -19,10 +19,11 @@ const io = socketIO(server);
 
 io.on("connection", (socket) => {
     console.log('Nueva conexion ' + socket.id);
-    let conectados=[];
     socket.on("chat-mensaje", (data) => {
+        lMensajes.push(data);
         io.sockets.emit("chat-mensaje", data);
         //le envio el mensaje a todos los sockets conectados
+        return lMensajes
     })
 
     // escucho los datos (data)= el usuario 
