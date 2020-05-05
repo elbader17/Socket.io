@@ -1,5 +1,5 @@
 # Socke-IO-chat
 
-npm install express
+npm install 
 
 npm run dev
